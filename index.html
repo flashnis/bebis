@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mucizemiz Büyüyor 🐣</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐣</text></svg>">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdf6e3;
+            color: #5c4d4d;
+            margin: 0;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .layout {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+            align-items: flex-start;
+        }
+        
+        .side-panel {
+            flex: 1;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 25px;
+            min-width: 250px;
+        }
+        
+        .main-panel {
+            flex: 2;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 30px;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .layout { flex-direction: column; }
+            .left-panel { order: 2; }
+            .main-panel { order: 1; width: auto; }
+            .right-panel { order: 3; }
+        }
+
+        h1, h2 {
+            color: #e27d60;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        h2 { font-size: 1.3em; text-align: center; }
+        
+        .status {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #85cdca;
+            margin-bottom: 10px;
+        }
+        .stage-box {
+            background: #e8f4f4;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 1.1em;
+            color: #4a908d;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .stage-icon { font-size: 2em; }
+
+        .ultrason-img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .love-note {
+            background: #fff0f0;
+            border-left: 5px solid #ffb3b3;
+            padding: 15px 20px;
+            border-radius: 0 15px 15px 0;
+            text-align: left;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .countdown {
+            background: #e8a87c;
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(232, 168, 124, 0.4);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        select, input {
+            padding: 12px;
+            border: 1px solid #dcdcdc;
+            border-radius: 10px;
+            font-size: 1em;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background: #85cdca;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            width: 100%;
+            font-size: 1em;
+        }
+        button:hover { background: #68b2b0; }
+
+        .name-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .name-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+        .boy-name { color: #4a90e2; font-weight: bold; }
+        .girl-name { color: #e24a85; font-weight: bold; }
+        
+        .vote-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .vote-count {
+            background: #ffdb58;
+            color: #8c7300;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .vote-btn {
+            background: none;
+            color: #ff6b6b;
+            padding: 0;
+            width: auto;
+            font-size: 1.2em;
+            box-shadow: none;
+        }
+        .vote-btn:hover { background: none; transform: scale(1.2); }
+        .delete-btn {
+            background: none;
+            color: #ccc;
+            padding: 0;
+            width: auto;
+            font-size: 0.9em;
+        }
+        .delete-btn:hover { background: none; color: #ff0000; }
+
+        .audio-container { margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <!-- Müzik (Otomatik çalma kaldırıldı, sadece butonla çalışır) -->
+    <audio id="bg-audio" loop>
+        <source src="intro.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="layout">
+        
+        <!-- SOL PANEL -->
+        <div class="side-panel left-panel">
+            <h2>İsim Önerisi Ekle 💡</h2>
+            <p style="font-size: 0.9em; color: #888; text-align: center;">Aklına gelen ismi hemen aşağıya yaz.</p>
+            
+            <div class="form-group">
+                <select id="gender-select">
+                    <option value="Kız">Kız 🎀</option>
+                    <option value="Erkek">Erkek 🧢</option>
+                </select>
+                <input type="text" id="name-input" placeholder="Örn: Asel, Demir..." onkeypress="handleEnter(event)">
+                <button type="button" onclick="saveName()">Listeye Ekle</button>
+            </div>
+        </div>
+
+        <!-- ORTA PANEL -->
+        <div class="main-panel">
+            <h1>Hoş Geldin Mucizemiz!</h1>
+            
+            <div class="love-note">
+                “Hayatıma girdiğin günden beri her şeyi daha güzel, daha anlamlı hale getirdin sevgilim. Sen benim en büyük şansımsın. İyi ki varsın, iyi ki hayatımı seninle paylaşıyorum. Sen hem güçlü hem de kalbi çok güzel bir eşsin. Seni her şeyden çok seviyorum.”
+            </div>
+
+            <div class="status" id="day-counter">Şu an tam 0 günlük</div>
+            
+            <div class="stage-box" id="stage-box">
+                <span class="stage-icon" id="stage-icon">🌱</span>
+                <span id="stage-text">Yeşil Filizimiz Büyüyor</span>
+            </div>
+            
+            <img src="ultrason.jpg" alt="İlk Fotoğrafın" class="ultrason-img" onerror="this.style.display='none';">
+
+            <div class="countdown">
+                Tahmini Kavuşmaya: <span id="days-left">233</span> Gün Kaldı! 🍼
+            </div>
+
+            <div class="audio-container">
+                <button id="audio-control-btn" style="width: auto; padding: 10px 20px;" onclick="toggleAudio()">🎵 Müziği Başlat</button>
+            </div>
+        </div>
+
+        <!-- SAĞ PANEL -->
+        <div class="side-panel right-panel">
+            <h2>Favori İsimler 🏆</h2>
+            <p style="font-size: 0.9em; color: #888; text-align: center;">En çok kalp alanı seçeriz!</p>
+            
+            <div class="name-list" id="name-list-container">
+                <!-- İsimler buraya gelecek -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. BÜYÜME HESAPLAMA ---
+        const baslangicTarihi = new Date("2026-05-03T00:00:00"); 
+        const toplamGebelikSuresi = 280;
+
+        function updateGrowth() {
+            const bugun = new Date();
+            const gecenZaman = bugun.getTime() - baslangicTarihi.getTime();
+            const gecenGun = Math.floor(gecenZaman / (1000 * 3600 * 24));
+            
+            document.getElementById('day-counter').innerText = `Şu an tam ${gecenGun} günlük`;
+            
+            const kalanGun = toplamGebelikSuresi - gecenGun;
+            document.getElementById('days-left').innerText = kalanGun > 0 ? kalanGun : 0;
+
+            let icon = "🌱"; let text = "";
+            if (gecenGun <= 30) { icon = "🌰"; text = "Minik Tohumumuz Toprağa Düştü"; } 
+            else if (gecenGun <= 90) { icon = "🌱"; text = "Yeşil Filizimiz Yeşeriyor"; } 
+            else if (gecenGun <= 160) { icon = "🌿"; text = "Güzel Fidanımız Kök Salıyor"; } 
+            else if (gecenGun <= 240) { icon = "🌳"; text = "Kocaman Bir Ağaç Olduk"; } 
+            else { icon = "🍎"; text = "En Tatlı Meyvemizi Bekliyoruz"; }
+
+            document.getElementById('stage-icon').innerText = icon;
+            document.getElementById('stage-text').innerText = text;
+        }
+
+        // --- 2. GÜVENLİ İSİM KAYDETME (LOCAL STORAGE & RAM) ---
+        let currentNames = [];
+
+        function loadNames() {
+            try {
+                const stored = localStorage.getItem('bebisNamesSafe');
+                if (stored) currentNames = JSON.parse(stored);
+            } catch (error) {
+                console.warn("Tarayıcı yerel kayda izin vermiyor, geçici hafıza kullanılıyor.");
+            }
+            renderList();
+        }
+
+        function renderList() {
+            const listContainer = document.getElementById('name-list-container');
+            listContainer.innerHTML = ''; 
+            
+            if(currentNames.length === 0) {
+                listContainer.innerHTML = '<div style="text-align:center; color:#aaa; font-style:italic;">Henüz isim eklenmedi.</div>';
+                return;
+            }
+
+            // Oylara göre büyükten küçüğe sırala
+            const sortedNames = [...currentNames].sort((a, b) => b.votes - a.votes);
+
+            sortedNames.forEach((item) => {
+                const div = document.createElement('div');
+                div.className = 'name-item';
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.className = item.gender === 'Kız' ? 'girl-name' : 'boy-name';
+                nameSpan.innerText = `${item.gender === 'Kız' ? '🎀' : '🧢'} ${item.name}`;
+
+                const voteSection = document.createElement('div');
+                voteSection.className = 'vote-section';
+
+                const voteCount = document.createElement('span');
+                voteCount.className = 'vote-count';
+                voteCount.innerText = item.votes + ' Oy';
+
+                const voteBtn = document.createElement('button');
+                voteBtn.className = 'vote-btn';
+                voteBtn.innerText = '❤️';
+                voteBtn.onclick = () => updateVote(item.id, 1);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.innerText = '✖';
+                deleteBtn.title = 'Sil';
+                deleteBtn.onclick = () => deleteName(item.id);
+
+                voteSection.appendChild(voteCount);
+                voteSection.appendChild(voteBtn);
+                voteSection.appendChild(deleteBtn);
+
+                div.appendChild(nameSpan);
+                div.appendChild(voteSection);
+                listContainer.appendChild(div);
+            });
+        }
+
+        function syncStorage() {
+            try {
+                localStorage.setItem('bebisNamesSafe', JSON.stringify(currentNames));
+            } catch (error) {
+                console.warn("Değişiklikler tarayıcı kısıtlaması nedeniyle sadece bu oturum için geçerli.");
+            }
+        }
+
+        function saveName() {
+            const nameInput = document.getElementById('name-input');
+            const nameValue = nameInput.value.trim();
+            const genderValue = document.getElementById('gender-select').value;
+
+            if (nameValue === '') return;
+
+            currentNames.push({ 
+                id: Date.now(), 
+                name: nameValue, 
+                gender: genderValue, 
+                votes: 0 
+            });
+            
+            syncStorage();
+            nameInput.value = ''; 
+            renderList(); 
+        }
+
+        function updateVote(id, amount) {
+            const item = currentNames.find(n => n.id === id);
+            if(item) {
+                item.votes += amount;
+                syncStorage();
+                renderList();
+            }
+        }
+
+        function deleteName(id) {
+            currentNames = currentNames.filter(n => n.id !== id);
+            syncStorage();
+            renderList();
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                saveName();
+            }
+        }
+
+        // --- 3. MÜZİK KONTROLÜ (SADECE BUTON) ---
+        const audio = document.getElementById('bg-audio');
+        const audioBtn = document.getElementById('audio-control-btn');
+
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+                audioBtn.innerText = "⏸ Müziği Durdur";
+            } else {
+                audio.pause();
+                audioBtn.innerText = "🎵 Müziği Başlat";
+            }
+        }
+
+        // Sayfa yüklendiğinde çalışacaklar
+        window.addEventListener('DOMContentLoaded', () => {
+            updateGrowth();
+            loadNames();
+        });
+
+    </script>
+</body>
+</html>
